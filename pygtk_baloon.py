@@ -1,5 +1,5 @@
 #                                    LICENSE BSD 2 CLAUSE                                       #
-#   Copyright 2011 Mirio. All rights reserved.                                             #
+#   Copyright 2011 Mirio. All rights reserved.                                                  #
 #   Redistribution and use in source and binary forms, with or without modification, are        #
 #   permitted provided that the following conditions are met:                                   #
 #       1. Redistributions of source code must retain the above copyright notice, this list of  #
@@ -62,11 +62,13 @@ def baloon(title, message, timeout, position):
     elif position == 3:
         main.move(0, gtk.gdk.screen_height() - height)
     elif position == 4:
-        main.move(gtk.gdk.screen_width() - width, gtk.gdk.screen_height() - height)
+        main.move(gtk.gdk.screen_width() - width,
+                  gtk.gdk.screen_height() - height)
     elif position == 5:
         main.move(0, gtk.gdk.screen_height() - height-30)
     elif position == 6:
-        main.move(gtk.gdk.screen_width() - width, gtk.gdk.screen_height() - height-30)
+        main.move(gtk.gdk.screen_width() - width, 
+                  gtk.gdk.screen_height() - height-30)
     else:
         print "The value is not valid."
     main.show()

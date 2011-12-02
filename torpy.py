@@ -1,5 +1,5 @@
 #                                    LICENSE BSD 2 CLAUSE                                       #
-#   Copyright 2011 Mirio. All rights reserved.                                             #
+#   Copyright 2011 Mirio. All rights reserved.                                                  #
 #   Redistribution and use in source and binary forms, with or without modification, are        #
 #   permitted provided that the following conditions are met:                                   #
 #       1. Redistributions of source code must retain the above copyright notice, this list of  #
@@ -29,6 +29,7 @@ import os
 import socket
 import time
 import pygtk_baloon
+import sys
 
 def get_myip():
     proxy_handler = urllib2.ProxyHandler({'http': '127.0.0.1:8118'})
@@ -63,48 +64,66 @@ def check_myip(ip, rescan_time):
 def main():
     separator = "=" * 30 + "\n\n"
     if (os.name == 'posix'):
+        print "\n" * 30
+        print "Torpy Version: " + __version__
         try:
-            print "\n" * 30
-            print "Torpy Version: " + __version__
             print "Ip = " + get_myip()
             print "Dns = " + get_dns_linux()
             print "Resolve Host = " + get_resolvename()
             print "\n" * 5
             try:
                 rescan_time = int(raw_input("Rescan time (Seconds)\n--> "))
-                while 1:
-                    if check_myip(get_myip(), rescan_time):
-                        print "\n\n\n" + separator + time.strftime("[%H:%M:%S] ") + "\n Your ip is changed!\n Your New Ip: "+ get_myip() + "\n Your New ResolveHost: " + get_resolvename() + "\n\n\n" + separator
-                        pygtk_baloon.baloon("Torpy", "Your ip is changed!\n Your New Ip: "+ get_myip() + "\n Your New ResolveHost:\n" + get_resolvename(), 10000, 4)
-                    else:
-                        print "\n\n\n" + separator + time.strftime("[%H:%M:%S] ") + "Your ip is not changed"
-                        pygtk_baloon.baloon("Torpy","Your ip is not changed", 10000, 4)
             except ValueError:
-                    print "Time rescan is invalid."
+                sys.exit()
+            while 1:
+                if check_myip(get_myip(), rescan_time):
+                    print "\n" + separator + time.strftime("[%H:%M:%S] ") 
+                    print "Your ip is changed!\n Your New Ip: "+ get_myip() 
+                    print "Your New ResolveHost: " + get_resolvename()
+                    print "\n" + separator
+                    pygtk_baloon.baloon("Torpy",
+                         "Your ip is changed!\n Your New Ip: "+ get_myip() + 
+                        "\nYour New ResolveHost:\n" + get_resolvename(),
+                                                     10000, 4)
+                else:
+                    print "\n" + separator + time.strftime("[%H:%M:%S] ")
+                    print "Your ip is not changed"
+                    pygtk_baloon.baloon("Torpy","Your ip is not changed",
+                                            10000, 4)
         except urllib2.URLError:
-            print "Tor is not enabled or polipo is not running. Torpy requited: Tor+Polipo"
+            print "Tor is not enabled or polipo is not running. "
+            print "Torpy requires: Tor+Polipo"
         else:
+            set_title = os.popen('title Torpy')
+            print "\n" * 30
+            print "Torpy Version: " + __version__
             try:
-                set_title = os.popen('title Torpy')
-                print "\n" * 30
-                print "Torpy Version: " + __version__
                 print "Ip = " + get_myip()
                 print "Dns = " + get_dns_win()
                 print "Resolve Host = " + get_resolvename()
                 print "\n" * 5
                 try:
                     rescan_time = int(raw_input("Rescan time (Seconds)\n--> "))
-                    while 1:
-                        if check_myip(get_myip(), rescan_time):
-                            print "\n\n\n" + separator + time.strftime("[%H:%M:%S] ") + "\n Your ip is changed!\n Your New Ip: "+ get_myip() + "\n Your New ResolveHost: " + get_resolvename() + "\n\n\n" + separator
-                            pygtk_baloon.baloon("Torpy", "Your ip is changed!\n Your New Ip: "+ get_myip() + "\n Your New ResolveHost:\n" + get_resolvename(), 10000, 6 )
-                        else:
-                            print "\n\n\n" + separator + time.strftime("[%H:%M:%S] ") + "Your ip is not changed"
-                            pygtk_baloon.baloon("Torpy","Your ip is not changed", 10000, 6 )
                 except ValueError:
-                    print "Time rescan is invalid."
+                    sys.exit()
+                while 1:
+                    if check_myip(get_myip(), rescan_time):
+                        print "\n" + separator + time.strftime("[%H:%M:%S] ")
+                        print "Your ip is changed!\n Your New Ip: "+ get_myip() 
+                        print "\nYour New ResolveHost: " +  get_resolvename() 
+                        print "\n\n\n" + separator
+                        pygtk_baloon.baloon("Torpy",
+                                     "Your ip is changed!\n Your New Ip: " +
+                                     get_myip() + "\n Your New ResolveHost:\n"+
+                                     get_resolvename(), 10000, 6 )
+                    else:
+                        print "\n" + separator + time.strftime("[%H:%M:%S] ") 
+                        print "Your ip is not changed"
+                        pygtk_baloon.baloon("Torpy","Your ip is not changed"
+                                                    , 10000, 6 )
             except urllib2.URLError:
-                print "Tor is not enabled or polipo is not running. Torpy requited: Tor+Polipo"
+                print "Tor is not enabled or polipo is not running."
+                print "Torpy requires: Tor+Polipo"
 try:
     main()
 except KeyboardInterrupt:
