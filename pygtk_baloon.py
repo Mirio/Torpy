@@ -22,7 +22,7 @@
 #   authors and should not be interpreted as representing official policies, either expressed   #
 #   or implied, of Mirio                                                                        #
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 # Import
 import gtk
@@ -55,6 +55,7 @@ def baloon(title, message, timeout, position):
     label_text.set_text(message)
     width, height = main.get_size()
     gobject.timeout_add(timeout, hide)
+    gtk.Window.set_modal(True)
     if position == 1:
         main.move(0,0)
     elif position == 2:
